@@ -5,39 +5,54 @@ using UnityEngine.Windows.WebCam;
 
 public class HoloCamera : MonoBehaviour
 {
-    PhotoCapture photoCaptureObject = null;
     Texture2D targetTexture = null;
+    CameraParameters cameraParameters = new CameraParameters();
+    PhotoCapture photoCaptureObject = null;
+
     Resolution cameraResolution;
-    float offset = 0.0f;
+    GameObject quad = null;
+    Renderer quadRenderer = null;
+    bool isCapture = false;
+    bool done = true;
     // Use this for initialization
     void Start()
     {
-        targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
-        cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
 
-        PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject) {
-            photoCaptureObject = captureObject;
-            CameraParameters cameraParameters = new CameraParameters();
-            cameraParameters.hologramOpacity = 0.0f;
-            cameraParameters.cameraResolutionWidth = cameraResolution.width;
-            cameraParameters.cameraResolutionHeight = cameraResolution.height;
-            cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
-        });
+        //cameraResolution.width = 1440;
+        //cameraResolution.height = 936;
+        cameraResolution.width = 600;
+        cameraResolution.height = 480;
+        cameraResolution.refreshRate = 0;
+
+        float scale = 0.001f;
+        quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+        quad.transform.parent = this.transform;
+        quad.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
+        quad.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
+
+        targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
+
+        cameraParameters.hologramOpacity = 0.0f;
+        cameraParameters.cameraResolutionWidth = cameraResolution.width;
+        cameraParameters.cameraResolutionHeight = cameraResolution.height;
+        cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
+
+        quadRenderer = quad.GetComponent<Renderer>() as Renderer;
+        quadRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+
+        
 
     }
 
+    public void ToggleCapture()
+    {
+        isCapture = !isCapture;
+    }
     public void TakePhoto()
     {
-        targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
-
         PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject) {
             photoCaptureObject = captureObject;
-            CameraParameters cameraParameters = new CameraParameters();
-            cameraParameters.hologramOpacity = 0.0f;
-            cameraParameters.cameraResolutionWidth = cameraResolution.width;
-            cameraParameters.cameraResolutionHeight = cameraResolution.height;
-            cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
-
             // Activate the camera
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result) {
                 // Take a picture
@@ -50,14 +65,8 @@ public class HoloCamera : MonoBehaviour
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
 
-        // Create a gameobject that we can apply our texture to
-        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        Renderer quadRenderer = quad.GetComponent<Renderer>() as Renderer;
-        quadRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        // apply our texture to our gameobject
 
-        quad.transform.parent = this.transform;
-        quad.transform.localPosition = new Vector3(0.0f, offset, 3.0f);
-        offset += 3.0f;
         quadRenderer.material.SetTexture("_MainTex", targetTexture);
 
         // Deactivate our camera
@@ -69,5 +78,26 @@ public class HoloCamera : MonoBehaviour
         // Shutdown our photo capture resource
         photoCaptureObject.Dispose();
         photoCaptureObject = null;
+        done = true;
+    }
+
+    void Update()
+    {
+        if (isCapture && done)
+        {
+            done = false;
+            PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject)
+            {
+                photoCaptureObject = captureObject;
+                // Activate the camera
+                photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result)
+                {
+                    // Take a picture
+                    photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
+                    
+                });
+            });
+            
+        }
     }
 }
