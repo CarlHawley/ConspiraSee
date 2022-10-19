@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using UnityEngine.Windows.WebCam;
+using UnityEngine.Windows;
+using ConspiraSee;
 
 public class HoloCamera : MonoBehaviour
 {
@@ -10,8 +12,10 @@ public class HoloCamera : MonoBehaviour
     PhotoCapture photoCaptureObject = null;
 
     Resolution cameraResolution;
-    GameObject quad = null;
-    Renderer quadRenderer = null;
+    GameObject quad1 = null;
+    GameObject quad2 = null;
+    Renderer quad1Renderer = null;
+    Renderer quad2Renderer = null;
     bool isCapture = false;
     bool done = true;
     // Use this for initialization
@@ -25,11 +29,16 @@ public class HoloCamera : MonoBehaviour
         cameraResolution.refreshRate = 0;
 
         float scale = 0.001f;
-        quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
-        quad.transform.parent = this.transform;
-        quad.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
-        quad.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
+        quad1.transform.parent = this.transform;
+        quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
+        quad1.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
+
+        quad2.transform.parent = this.transform;
+        quad2.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
+        quad2.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
 
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
 
@@ -38,10 +47,11 @@ public class HoloCamera : MonoBehaviour
         cameraParameters.cameraResolutionHeight = cameraResolution.height;
         cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
 
-        quadRenderer = quad.GetComponent<Renderer>() as Renderer;
-        quadRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        quad1Renderer = quad1.GetComponent<Renderer>() as Renderer;
+        quad1Renderer.material = new Material(Shader.Find("Unlit/Texture"));
 
-        
+        quad2Renderer = quad2.GetComponent<Renderer>() as Renderer;
+        quad2Renderer.material = new Material(Shader.Find("Unlit/Transparent"));
 
     }
 
@@ -64,11 +74,22 @@ public class HoloCamera : MonoBehaviour
     {
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
+        Holopic hp = new Holopic(targetTexture, Color.white, 15);
 
         // apply our texture to our gameobject
 
-        quadRenderer.material.SetTexture("_MainTex", targetTexture);
+        quad1Renderer.material.SetTexture("_MainTex", hp.GetBaseLayer());
+        quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
 
+        // Deactivate our camera
+        photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
+    }
+    void OnCapturedPhotoToMemoryTester(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
+    {
+        byte[] stripes = File.ReadAllBytes(Application.dataPath + "/stripedHighlights.png");
+        targetTexture.LoadImage(stripes);
+
+        quad1Renderer.material.SetTexture("_MainTex", targetTexture);
         // Deactivate our camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
     }
@@ -79,6 +100,17 @@ public class HoloCamera : MonoBehaviour
         photoCaptureObject.Dispose();
         photoCaptureObject = null;
         done = true;
+    }
+
+    private void SaveTexture(Texture2D texture)
+    {
+        byte[] bytes = texture.EncodeToPNG();
+        var dirPath = Application.dataPath + "/../SavedImage/";
+        if(!Directory.Exists(dirPath))
+        {
+            Directory.CreateDirectory(dirPath);
+        }
+        File.WriteAllBytes(dirPath + "Image.png", bytes);
     }
 
     void Update()
