@@ -14,6 +14,7 @@ public class HoloCamera : MonoBehaviour
     Renderer quadRenderer = null;
     bool isCapture = false;
     bool done = true;
+    float offset = 0.0f;
     // Use this for initialization
     void Start()
     {
@@ -45,21 +46,27 @@ public class HoloCamera : MonoBehaviour
 
     }
 
+    
+    public void extractPhoto()
+    {
+        GameObject quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad2.transform.parent = this.transform;
+        quad2.transform.localPosition = new Vector3(5.0f, 0.0f, offset);
+        quad2.transform.localScale = quad.transform.localScale;
+        Renderer quad2Renderer = quad2.GetComponent<Renderer>() as Renderer;
+        quad2Renderer.material = new Material(Shader.Find("Unlit/Texture"));
+        Texture2D target2 = new Texture2D(cameraResolution.width, cameraResolution.height);
+        Graphics.CopyTexture(targetTexture, target2);
+        quad2Renderer.material.SetTexture("_MainTex", target2);
+        offset += 1.0f;
+    }
+
+
     public void ToggleCapture()
     {
         isCapture = !isCapture;
     }
-    public void TakePhoto()
-    {
-        PhotoCapture.CreateAsync(false, delegate (PhotoCapture captureObject) {
-            photoCaptureObject = captureObject;
-            // Activate the camera
-            photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result) {
-                // Take a picture
-                photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
-            });
-        });
-    }
+
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         // Copy the raw image data into our target texture
