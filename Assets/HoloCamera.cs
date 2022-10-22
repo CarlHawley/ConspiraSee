@@ -5,6 +5,12 @@ using UnityEngine.Windows.WebCam;
 
 public class HoloCamera : MonoBehaviour
 {
+
+    public int width;
+    public int height;
+    public float scale;
+
+
     Texture2D targetTexture = null;
     CameraParameters cameraParameters = new CameraParameters();
     PhotoCapture photoCaptureObject = null;
@@ -18,19 +24,15 @@ public class HoloCamera : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-        //cameraResolution.width = 1440;
-        //cameraResolution.height = 936;
-        cameraResolution.width = 600;
-        cameraResolution.height = 480;
+        cameraResolution.width = this.width;
+        cameraResolution.height = this.height;
         cameraResolution.refreshRate = 0;
 
-        float scale = 0.001f;
         quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
         quad.transform.parent = this.transform;
         quad.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
-        quad.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
+        quad.transform.localScale = new Vector3(cameraResolution.width * this.scale, cameraResolution.height * this.scale, 0);
 
         targetTexture = new Texture2D(cameraResolution.width, cameraResolution.height);
 
