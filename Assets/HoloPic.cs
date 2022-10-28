@@ -39,7 +39,7 @@
 				if (dist < 100)
 				{
 					stripedLayerArray[i].a = 255;
-					Debug.Log("Color: R" + baseImageColors[i].r + "' G" + baseImageColors[i].g + "' B" + baseImageColors[i].b);
+					Debug.Log(baseImageColors[i].ToString());
 					Debug.Log(dist);
 				}
 				else if (dist < 100 + fuzz) { stripedLayerArray[i].a = 126; }
@@ -50,23 +50,33 @@
 			return stripes;
 		}
 
+
+		// Calculates the cartesian distance between colors
 		private double ColorDistance(Color32 currentPix, int[] target)
 		{
-            return Math.Sqrt(Math.Pow(currentPix[0] - target[0], 2) + Math.Pow(currentPix[1] - target[1], 2) + Math.Pow(currentPix[2] - target[2], 2));
+			return compositeDistance(vectorDist(currentPix, target));
 		}
-		public void setDisplay(DisplayEnum displaySetting)
+
+		// Vector-wise distance function between a Color/Color32 object and an int array
+		private int[] vectorDist(Color32 a, int[] b) =>
+			new int[] { a.r - b[0], a.g - b[1], a.b - b[2], 12 };
+
+		// Unary cartesian distance function for int array
+		private int compositeDistance(int[] a) =>
+		(int)Math.Sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
+
+        public void ReprocessImage(Texture2D texture, int[] selectedColor, int fuzz)
+        {
+            this.stripedLayer = processImage(texture, selectedColor, fuzz);
+        }
+        public void SetDisplay(DisplayEnum displaySetting)
 		{
 			this.displayLayers = displaySetting;
 		}
 
-		public DisplayEnum getDisplayEnum()
+		public DisplayEnum GetDisplayEnum()
 		{
 			return displayLayers;
-		}
-
-		public void setDisplayEnum(DisplayEnum newDisplayEnum)
-		{
-			this.displayLayers = newDisplayEnum;
 		}
 
 		public Texture2D GetBaseLayer()
@@ -78,7 +88,9 @@
 		{
 			return this.stripedLayer;
 		}
+		
 	}
 
+	
 	public enum DisplayEnum { BOTH, NEITHER, BASE, STRIPES }
 }

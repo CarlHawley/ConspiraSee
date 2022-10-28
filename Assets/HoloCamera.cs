@@ -74,7 +74,7 @@ public class HoloCamera : MonoBehaviour
     {
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
-        Holopic hp = new Holopic(targetTexture, new int[] {180, 0, 180}, 30);
+        Holopic hp = new Holopic(targetTexture, new int[] {180, 100, 180}, 30);
 
         // apply our texture to our gameobject
 
