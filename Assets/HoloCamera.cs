@@ -11,10 +11,9 @@ public class HoloCamera : MonoBehaviour
     CameraParameters cameraParameters = new CameraParameters();
     PhotoCapture photoCaptureObject = null;
 
-    private GameObject canvas, button1, button2, quad1, quad2 = null;
+    private GameObject button1, button2, quad1, quad2, canvas = null;
     private Renderer render1, render2;
     private float scale = 0.001f;
-    private Canvas canvas1;
 
     Resolution cameraResolution;
     //GameObject quad1 = null;
@@ -143,19 +142,16 @@ public class HoloCamera : MonoBehaviour
     }
     void Holoframe()
     {
-        canvas1 = gameObject.AddComponent<Canvas>();
-        quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        canvas = GameObject.Find("HoloframeCanvas");
+        quad1 = GameObject.Find("OriginalImagePanel");
+        quad2 = GameObject.Find("StripedLayerPanel");
 
-        quad1.transform.parent = canvas.transform;
-        quad2.transform.parent = canvas.transform;
+        quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
+        quad2.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
 
-        quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        quad2.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-
-        quad1.transform.localScale = new Vector3(600 * scale, 400 * scale, 0);
-        quad2.transform.localScale = new Vector3(600 * scale, 400 * scale, 0);
-        canvas.transform.localScale = new Vector3(650 * scale, 400 * scale, 0);
+        quad1.transform.localScale = new Vector3(.01f * scale, .01f * scale, 0);
+        quad2.transform.localScale = new Vector3(.01f * scale, .01f * scale, 0);
+        canvas.transform.localScale = new Vector3(.01f * scale, .01f * scale, 0);
 
         render1 = quad1.GetComponent<Renderer>() as Renderer;
         render1.material = new Material(Shader.Find("Unlit/Texture"));
