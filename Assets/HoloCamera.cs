@@ -11,10 +11,15 @@ public class HoloCamera : MonoBehaviour
     CameraParameters cameraParameters = new CameraParameters();
     PhotoCapture photoCaptureObject = null;
 
+    private GameObject canvas, button1, button2, quad1, quad2 = null;
+    private Renderer render1, render2;
+    private float scale = 0.001f;
+    private Canvas canvas1;
+
     Resolution cameraResolution;
-    GameObject quad1 = null;
+    //GameObject quad1 = null;
     //GameObject quad2 = null;
-    Renderer quad1Renderer = null;
+    //Renderer quad1Renderer = null;
     //Renderer quad2Renderer = null;
     bool isCapture = false;
     bool done = true;
@@ -28,13 +33,13 @@ public class HoloCamera : MonoBehaviour
         cameraResolution.height = 480;
         cameraResolution.refreshRate = 0;
 
-        float scale = 0.001f;
-        quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        //float scale = 0.001f;
+        //quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
         //quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
-        quad1.transform.parent = this.transform;
-        quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 1.0f);
-        quad1.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
+        //quad1.transform.parent = this.transform;
+        //quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 1.0f);
+        //quad1.transform.localScale = new Vector3(cameraResolution.width * scale, cameraResolution.height * scale, 0);
 
         //quad2.transform.parent = this.transform;
         //quad2.transform.localPosition = new Vector3(0.0f, 0.0f, 3.0f);
@@ -47,11 +52,13 @@ public class HoloCamera : MonoBehaviour
         cameraParameters.cameraResolutionHeight = cameraResolution.height;
         cameraParameters.pixelFormat = CapturePixelFormat.BGRA32;
 
-        quad1Renderer = quad1.GetComponent<Renderer>() as Renderer;
-        quad1Renderer.material = new Material(Shader.Find("Unlit/Texture"));
+        //quad1Renderer = quad1.GetComponent<Renderer>() as Renderer;
+        //quad1Renderer.material = new Material(Shader.Find("Unlit/Texture"));
 
         //quad2Renderer = quad2.GetComponent<Renderer>() as Renderer;
         //quad2Renderer.material = new Material(Shader.Find("Unlit/Transparent"));
+
+        Holoframe();
 
     }
 
@@ -74,10 +81,13 @@ public class HoloCamera : MonoBehaviour
     {
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
-        Holopic hp = new Holopic(targetTexture, Color.white, 15);
+        Holopic image = new Holopic(targetTexture, Color.white, 15);
+
+        render1.material.SetTexture("_MainTex", image.GetBaseLayer());
+        render2.material.SetTexture("_MainTex", image.GetStripedLayer());
 
         // apply our texture to our gameobject
-        quad1Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
+        //quad1Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
         //quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
 
         // Deactivate our camera
@@ -88,7 +98,7 @@ public class HoloCamera : MonoBehaviour
         byte[] stripes = File.ReadAllBytes(Application.dataPath + "/stripedHighlights.png");
         targetTexture.LoadImage(stripes);
 
-        quad1Renderer.material.SetTexture("_MainTex", targetTexture);
+        //quad1Renderer.material.SetTexture("_MainTex", targetTexture);
         // Deactivate our camera
         photoCaptureObject.StopPhotoModeAsync(OnStoppedPhotoMode);
     }
@@ -130,5 +140,27 @@ public class HoloCamera : MonoBehaviour
             });
             
         }
+    }
+    void Holoframe()
+    {
+        canvas1 = gameObject.AddComponent<Canvas>();
+        quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+        quad1.transform.parent = canvas.transform;
+        quad2.transform.parent = canvas.transform;
+
+        quad1.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+        quad2.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+        quad1.transform.localScale = new Vector3(600 * scale, 400 * scale, 0);
+        quad2.transform.localScale = new Vector3(600 * scale, 400 * scale, 0);
+        canvas.transform.localScale = new Vector3(650 * scale, 400 * scale, 0);
+
+        render1 = quad1.GetComponent<Renderer>() as Renderer;
+        render1.material = new Material(Shader.Find("Unlit/Texture"));
+
+        render2 = quad2.GetComponent<Renderer>() as Renderer;
+        render2.material = new Material(Shader.Find("Unlit/Transparent"));
     }
 }
