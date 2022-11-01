@@ -3,87 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Threading.Tasks;
+using ConspiraSee;
 
 public class Video : MonoBehaviour
 {
-    WebCamTexture webtex;
-    Color32[] data;
-	Texture2D stripes;
+	WebCamTexture webtex;
 	Renderer renderer;
-	int[] selectedColor = { 180, 100, 180 };
-	int fuzz = 30;
-	bool enabled = false;
+	GameObject quad1 = null;
+	GameObject quad2 = null;
+	Renderer quad1Renderer = null;
+	Renderer quad2Renderer = null;
+	Holopic hp;
+	Texture2D snapshot;
+	int count;
+
+
+	bool enabled = true;
+
 	// Start is called before the first frame update
 	void Start()
-    {
-		stripes = new Texture2D(2, 2);
-		if (File.Exists(Application.dataPath + "/stripedHighlights_600x480.png"))
-		{
-			byte[] stripeFile = File.ReadAllBytes(Application.dataPath + "/stripedHighlights_600x480.png");
-			stripes.LoadImage(stripeFile);
-		}
-		else
-		{
-			Debug.Log("404: Stripe File Not Found");
-		}
-
+	{
 		webtex = new WebCamTexture(640, 480);
-        renderer = GetComponent<Renderer>();
+		renderer = GetComponent<Renderer>();
+		renderer.material = new Material(Shader.Find("Unlit/Texture"));
 		webtex.Play();
-		data = webtex.GetPixels32();
+		renderer.material.mainTexture = webtex;
+
+		quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		quad1.transform.parent = this.transform;
+		quad1.transform.localPosition = new Vector3(1.0f, 0.0f, 0.0f);
+		quad1.transform.localScale = new Vector3(0.5f, 0.5f, 0);
+		quad1Renderer = quad1.GetComponent<Renderer>() as Renderer;
+		quad1Renderer.material = new Material(Shader.Find("Unlit/Texture"));
+
+		quad2 = GameObject.CreatePrimitive(PrimitiveType.Quad);
+		quad2.transform.parent = this.transform;
+		quad2.transform.localPosition = new Vector3(-1.0f, 0.0f, 0.0f);
+		quad2.transform.localScale = new Vector3(0.5f, 0.5f, 0);
+		quad2Renderer = quad2.GetComponent<Renderer>() as Renderer;
+		quad2Renderer.material = new Material(Shader.Find("Unlit/Transparent"));
+
+		snapshot = new Texture2D(640, 480);
+		snapshot.SetPixels32(webtex.GetPixels32());
+		snapshot.Apply();
+		hp = new Holopic(snapshot, new int[] { 3, 29, 132 }, 10);
+
+
+
+
 	}
-    // Update is called once per frame
-    void Update()
-    {
-		if (webtex.didUpdateThisFrame)
-		{
-			webtex.GetPixels32(data);
-			processImage(webtex.GetPixels32(), stripes.GetPixels32());
-			//renderer.material.mainTexture = webtex;
-			renderer.material.mainTexture = stripes;
-		}
-		
-
-    }
-	async private void processImage(Color32[] baseImageColors, Color32[] stripedLayerArray)
+	// Update is called once per frame
+	void Update()
 	{
-		await Task.Run(() =>
-		{
-			double dist;
-			//Debug.Log(baseImageColors.Length);
-			for (int i = 0; i < stripedLayerArray.Length; i++)
-			{
-				dist = ColorDistance(baseImageColors[i], selectedColor);
-
-				if (dist < 100)
-				{
-					stripedLayerArray[i].a = 255;
-					//Debug.Log(baseImageColors[i].ToString());
-					//Debug.Log(dist);
-				}
-				else if (dist < 100 + fuzz) { stripedLayerArray[i].a = 126; }
-				else { stripedLayerArray[i].a = 0; }
-			}
+        if (enabled && count > 120)
+        {
+			snapshot.SetPixels32(webtex.GetPixels32());
+			snapshot.Apply();
+			hp = new Holopic(snapshot, new int[] { 3, 29, 132 }, 10);
+			quad1Renderer.material.SetTexture("_MainTex", hp.GetBaseLayer());
+			quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
+			count = count % 120;
+			//enabled = false;
 			
-			//stripes.Apply();
-		});
-		stripes.SetPixels32(stripedLayerArray);
-		stripes.Apply();
-
+		}
+        else
+        {
+			if (count > 120)
+				count = count % 120;
+        }
+		count++;
+		
 	}
-
-
-	// Calculates the cartesian distance between colors
-	private double ColorDistance(Color32 currentPix, int[] target)
-	{
-		return compositeDistance(vectorDist(currentPix, target));
-	}
-
-	// Vector-wise distance function between a Color/Color32 object and an int array
-	private int[] vectorDist(Color32 a, int[] b) =>
-		new int[] { a.r - b[0], a.g - b[1], a.b - b[2], 12 };
-
-	// Unary cartesian distance function for int array
-	private int compositeDistance(int[] a) =>
-	(int)System.Math.Sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
 }
