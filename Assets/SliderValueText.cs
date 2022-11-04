@@ -20,12 +20,11 @@ public class SliderValueText : MonoBehaviour
         float sliderValue = slider.value;
         PlayerPrefs.SetFloat("Slider Value", sliderValue);
         Debug.Log(sliderValue);
-        //LoadValues();
+        LoadValues();
     }
 
     void LoadValues() {
         float sliderValue = PlayerPrefs.GetFloat("Slider Value");
         slider.value = sliderValue;
-
     }
 }
