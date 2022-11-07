@@ -704,7 +704,7 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   safeZone: 0
-  safeZoneBuffer: 0.3
+  safeZoneBuffer: 0.4
   updateWhenOppositeHandNear: 0
   hideHandCursorsOnActivate: 1
   rotationBehavior: 2
@@ -747,8 +747,8 @@ MonoBehaviour:
   trackedHandedness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0, z: 0.3}
-  additionalRotation: {x: 0, y: -5, z: 0}
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!114 &113889211
 MonoBehaviour:
