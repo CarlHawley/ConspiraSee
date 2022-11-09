@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 using System.Threading.Tasks;
 using ConspiraSee;
@@ -10,20 +11,27 @@ public class Video : MonoBehaviour
 {
 	WebCamTexture webtex;
 	Renderer renderer;
-	GameObject quad1 = null;
-	GameObject quad2 = null;
-	Renderer quad1Renderer = null;
-	Renderer quad2Renderer = null;
+	//GameObject quad1 = null;
+	//GameObject quad2 = null;
+	//Renderer quad1Renderer = null;
+	//Renderer quad2Renderer = null;
 	Holopic hp;
 	Texture2D snapshot;
 	int count;
-	int[] color = { 3, 29, 132 };
 
+	int[] color;
+
+	Slider[] sliders;
 	bool enabled = true;
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		sliders = new Slider[3];
+		sliders[0] = GameObject.Find("redSlider").GetComponent<Slider>();
+		sliders[1] = GameObject.Find("greenSlider").GetComponent<Slider>();
+		sliders[2] = GameObject.Find("blueSlider").GetComponent<Slider>();
+		color = updateColor(sliders);
 		webtex = new WebCamTexture(640, 480);
 		renderer = this.GetComponent<Renderer>() as Renderer ;
 		renderer.material = new Material(Shader.Find("Unlit/Transparent"));
@@ -50,10 +58,21 @@ public class Video : MonoBehaviour
 		hp = new Holopic(webtex.GetPixels32(),color, 10, webtex.width, webtex.height);
 		//renderer.material.mainTexture = hp.GetStripedLayer();
 
-
-
-
 	}
+
+	int[] updateColor(Slider[] sliderArray)
+	{
+
+		int[] colorArray = new int[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			colorArray[i] = (int)sliderArray[i].value;
+		}
+		return colorArray;
+	}
+
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -61,7 +80,7 @@ public class Video : MonoBehaviour
         {
 			//snapshot.SetPixels32(webtex.GetPixels32());
 			//snapshot.Apply();
-			hp.ReprocessImage(webtex.GetPixels32(),color,10);
+			hp.ReprocessImage(webtex.GetPixels32(),updateColor(sliders),10);
 			//quad1Renderer.material.SetTexture("_MainTex", hp.GetBaseLayer());
 			//quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
 			renderer.material.mainTexture = hp.GetStripedLayer();
