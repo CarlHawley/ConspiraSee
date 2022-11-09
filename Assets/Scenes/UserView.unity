@@ -444,6 +444,8 @@ GameObject:
   - component: {fileID: 108479755}
   - component: {fileID: 108479754}
   - component: {fileID: 108479753}
+  - component: {fileID: 108479757}
+  - component: {fileID: 108479758}
   m_Layer: 5
   m_Name: AdvancedMenu
   m_TagString: Untagged
@@ -625,6 +627,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawBoundsGizmo: 1
   drawLocalBoundsGizmo: 0
+--- !u!225 &108479757
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108479745}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &108479758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108479745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3755603b366b04dab02b30861cfe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visible: 1
 --- !u!1 &113889202
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,6 +667,8 @@ GameObject:
   - component: {fileID: 113889211}
   - component: {fileID: 113889210}
   - component: {fileID: 113889209}
+  - component: {fileID: 113889213}
+  - component: {fileID: 113889214}
   m_Layer: 5
   m_Name: BasicMenu
   m_TagString: Untagged
@@ -809,6 +838,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawBoundsGizmo: 1
   drawLocalBoundsGizmo: 0
+--- !u!225 &113889213
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113889202}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &113889214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113889202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3755603b366b04dab02b30861cfe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visible: 1
 --- !u!1 &136367330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1874,11 +1928,11 @@ PrefabInstance:
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 108479745}
+      objectReference: {fileID: 108479758}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 113889202}
+      objectReference: {fileID: 113889214}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1889,19 +1943,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: set_Visible
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
+      value: set_Visible
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: CanvasElementVisibility, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: CanvasElementVisibility, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -3661,11 +3715,11 @@ PrefabInstance:
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 113889202}
+      objectReference: {fileID: 113889214}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 108479745}
+      objectReference: {fileID: 108479758}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3676,19 +3730,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: set_Visible
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
+      value: set_Visible
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: CanvasElementVisibility, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: CanvasElementVisibility, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908064, guid: c31734863d3bf254191878828a9e17e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -5956,6 +6010,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1867037711}
+  - component: {fileID: 1867037713}
+  - component: {fileID: 1867037712}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Untagged
@@ -5978,6 +6034,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1867037712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867037710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3755603b366b04dab02b30861cfe8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visible: 0
+--- !u!225 &1867037713
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867037710}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!4 &1875934606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2665847549804687481, guid: 8e490a62f12a9764a84b31db73256d39, type: 3}
