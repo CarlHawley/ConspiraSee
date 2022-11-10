@@ -33,10 +33,15 @@ public class Video : MonoBehaviour
 		sliders[2] = GameObject.Find("blueSlider").GetComponent<Slider>();
 		color = updateColor(sliders);
 		webtex = new WebCamTexture(896, 504);
+		//webtex = new WebCamTexture(640, 480);
 		renderer = this.GetComponent<Renderer>() as Renderer ;
-		renderer.material = new Material(Shader.Find("Unlit/Transparent"));
+		//renderer.material = new Material(Shader.Find("Unlit/Transparent"));
 		webtex.Play();
 		renderer.material.mainTexture = webtex;
+		float aspectratio = (float)webtex.width / (float)webtex.height;
+		Vector3 scale = transform.localScale;
+		scale.x = scale.y * aspectratio;
+		transform.localScale = scale;
 		
 		/*quad1 = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		quad1.transform.parent = this.transform;
@@ -76,10 +81,10 @@ public class Video : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		transform.position = Camera.main.transform.position + Camera.main.transform.forward * 0.67f + Camera.main.transform.up * -0.06f;
+		transform.position = Camera.main.transform.position + Camera.main.transform.forward * 0.67f + Camera.main.transform.up * -0.04f;
 		transform.rotation = Camera.main.transform.rotation;
 
-        if (enabled && count > 120)
+        if (enabled)
         {
 			//snapshot.SetPixels32(webtex.GetPixels32());
 			//snapshot.Apply();
@@ -87,16 +92,10 @@ public class Video : MonoBehaviour
 			//quad1Renderer.material.SetTexture("_MainTex", hp.GetBaseLayer());
 			//quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
 			renderer.material.mainTexture = hp.GetStripedLayer();
-			count = count % 120;
+
 			//enabled = false;
 			
 		}
-        else
-        {
-			if (count > 120)
-				count = count % 120;
-        }
-		count++;
 		
 	}
 }

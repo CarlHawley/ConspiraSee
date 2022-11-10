@@ -32,7 +32,7 @@ namespace ConspiraSee
 			}
 			else
 			{
-				Debug.Log("404: Stripe File Not Found");
+				//Debug.Log("404: Stripe File Not Found");
 			}
 
 			Color32[] stripedLayerArray = this.stripedLayer.GetPixels32(0);
