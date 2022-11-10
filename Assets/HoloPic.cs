@@ -25,16 +25,18 @@ namespace ConspiraSee
 			GameObject.Destroy(this.stripedLayer);
 			this.stripedLayer = new Texture2D(this.baseLayer.width, this.baseLayer.height);
 			double dist;
-			if (File.Exists(Application.dataPath + "/stripedHighlights_600x480.png"))
+			if (File.Exists(Application.dataPath + "/stripedHighlights_896x504.png"))
 			{
-				byte[] stripeFile = File.ReadAllBytes(Application.dataPath + "/stripedHighlights_600x480.png");
+				byte[] stripeFile = File.ReadAllBytes(Application.dataPath + "/stripedHighlights_896x504.png");
 				this.stripedLayer.LoadImage(stripeFile);
 			}
 			else
 			{
 				Debug.Log("404: Stripe File Not Found");
 			}
-			Color32[] stripedLayerArray =this.stripedLayer.GetPixels32(0);
+
+			Color32[] stripedLayerArray = this.stripedLayer.GetPixels32(0);
+
 			for (int i = 0; i < stripedLayerArray.Length; i++)
 			{
 				dist = ColorDistance(baseImageColors[i], selectedColor);

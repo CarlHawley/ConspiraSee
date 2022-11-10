@@ -32,7 +32,7 @@ public class Video : MonoBehaviour
 		sliders[1] = GameObject.Find("greenSlider").GetComponent<Slider>();
 		sliders[2] = GameObject.Find("blueSlider").GetComponent<Slider>();
 		color = updateColor(sliders);
-		webtex = new WebCamTexture(640, 480);
+		webtex = new WebCamTexture(896, 504);
 		renderer = this.GetComponent<Renderer>() as Renderer ;
 		renderer.material = new Material(Shader.Find("Unlit/Transparent"));
 		webtex.Play();
@@ -76,6 +76,9 @@ public class Video : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		transform.position = Camera.main.transform.position + Camera.main.transform.forward * 0.67f + Camera.main.transform.up * -0.06f;
+		transform.rotation = Camera.main.transform.rotation;
+
         if (enabled && count > 120)
         {
 			//snapshot.SetPixels32(webtex.GetPixels32());
