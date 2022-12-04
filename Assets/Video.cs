@@ -6,7 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ConspiraSee;
 using UnityEngine.Scripting;
-
+/*
 public class Video : MonoBehaviour
 {
 	WebCamTexture webtex;
@@ -60,11 +60,11 @@ public class Video : MonoBehaviour
 		//snapshot = new Texture2D(640, 480);
 		//snapshot.SetPixels32(webtex.GetPixels32());
 		//snapshot.Apply();
-		hp = new Holopic(webtex.GetPixels32(),color, 10, webtex.width, webtex.height);
+		//hp = new Holopic(webtex.GetPixels32(),color, 10, webtex.width, webtex.height);
 		//renderer.material.mainTexture = hp.GetStripedLayer();
 
-	}
-
+	//}*/
+	/*
 	int[] updateColor(Slider[] sliderArray)
 	{
 
@@ -88,7 +88,7 @@ public class Video : MonoBehaviour
         {
 			//snapshot.SetPixels32(webtex.GetPixels32());
 			//snapshot.Apply();
-			hp.ReprocessImage(webtex.GetPixels32(),updateColor(sliders),10);
+			hp.ReprocessImage(webtex.GetPixels32(),updateColor(sliders),50);
 			//quad1Renderer.material.SetTexture("_MainTex", hp.GetBaseLayer());
 			//quad2Renderer.material.SetTexture("_MainTex", hp.GetStripedLayer());
 			renderer.material.mainTexture = hp.GetStripedLayer();
@@ -98,4 +98,4 @@ public class Video : MonoBehaviour
 		}
 		
 	}
-}
+}*/
