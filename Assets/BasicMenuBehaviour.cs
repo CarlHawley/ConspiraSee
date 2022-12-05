@@ -18,16 +18,16 @@ public class BasicMenuBehaviour : MonoBehaviour
     {
         sliderRed = GameObject.Find("redSlider");
         tempRed = sliderRed.GetComponent<Slider>();
-        tempRed.value = 180;
+        tempRed.value = 140;
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 0;
+        tempGreen.value = 5;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 0;
+        tempBlue.value = 30;
     }
 
     public void assignOrange()
@@ -38,44 +38,44 @@ public class BasicMenuBehaviour : MonoBehaviour
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 150;
+        tempGreen.value = 30;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 66;
+        tempBlue.value = 15;
     }
 
     public void assignYellow()
     {
         sliderRed = GameObject.Find("redSlider");
         tempRed = sliderRed.GetComponent<Slider>();
-        tempRed.value = 170;
+        tempRed.value = 150;
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 170;
+        tempGreen.value = 110;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 20;
+        tempBlue.value = 30;
     }
 
     public void assignGreen()
     {
         sliderRed = GameObject.Find("redSlider");
         tempRed = sliderRed.GetComponent<Slider>();
-        tempRed.value = 40;
+        tempRed.value = 10;
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 180;
+        tempGreen.value = 100;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 50;
+        tempBlue.value = 90;
     }
 
     public void assignBlue()
@@ -86,35 +86,35 @@ public class BasicMenuBehaviour : MonoBehaviour
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 0;
+        tempGreen.value = 40;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 180;
+        tempBlue.value = 110;
     }
 
     public void assignIndigo()
     {
         sliderRed = GameObject.Find("redSlider");
         tempRed = sliderRed.GetComponent<Slider>();
-        tempRed.value = 75;
+        tempRed.value = 20;
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
-        tempGreen.value = 0;
+        tempGreen.value = 20;
 
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 130;
+        tempBlue.value = 60;
     }
 
     public void assignViolet()
     {
         sliderRed = GameObject.Find("redSlider");
         tempRed = sliderRed.GetComponent<Slider>();
-        tempRed.value = 143;
+        tempRed.value = 80;
 
         sliderGreen = GameObject.Find("greenSlider");
         tempGreen = sliderGreen.GetComponent<Slider>();
@@ -123,6 +123,6 @@ public class BasicMenuBehaviour : MonoBehaviour
 
         sliderBlue = GameObject.Find("blueSlider");
         tempBlue = sliderBlue.GetComponent<Slider>();
-        tempBlue.value = 180;
+        tempBlue.value = 110;
     }
 }

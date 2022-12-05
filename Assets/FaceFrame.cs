@@ -20,8 +20,7 @@ public class FaceFrame : MonoBehaviour
 		Vector3 scale;
 
 		// Get handle to holoLens webcam and begin rendering to texture
-		//s_webcamTexture = new WebCamTexture(896, 504); // Magic numbers are smallest holoLens main camera resolution
-		s_webcamTexture = new WebCamTexture();
+		s_webcamTexture = new WebCamTexture(896, 504); // Magic numbers are smallest holoLens main camera resolution
 		s_renderer = GetComponent<Renderer>();
 		s_webcamTexture.Play();
 		s_renderer.material.mainTexture = s_webcamTexture;
@@ -42,6 +41,7 @@ public class FaceFrame : MonoBehaviour
 		
 		// Create holoPic for frame processing
 		s_holoPic = new Holopic(s_webcamTexture.GetPixels32(), GetColorFromSliders(), s_webcamTexture.width, s_webcamTexture.height);
+		s_holoPic.SetDisplay(DisplayEnum.STRIPES);
 	}
 
 	int[] GetColorFromSliders()
@@ -60,12 +60,12 @@ public class FaceFrame : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// Manual tuning of FaceFrame position to optimize alignment, and update position per frame
+		// Manual tuning of FaceFrame position to try to optimize alignment, and update position per frame
 		transform.position = Camera.main.transform.position + Camera.main.transform.forward * 0.67f + Camera.main.transform.up * -0.04f; 
 		transform.rotation = Camera.main.transform.rotation;
 
 		// Get next frame from camera and reprocess the new image with the selected color
-		s_holoPic.ReprocessImage(s_webcamTexture.GetPixels32(), GetColorFromSliders(), FuzzFactor, CutoffFactor, MaxOpacityFactor);
+		s_holoPic.ReprocessImage(s_webcamTexture.GetPixels32(), GetColorFromSliders(), this.FuzzFactor, this.CutoffFactor, this.MaxOpacityFactor);
 		// Render new color selection frame to parent quad
 		s_renderer.material.mainTexture = s_holoPic.GetStripedLayer();			
 		
