@@ -12,8 +12,8 @@ public class SliderValueText : MonoBehaviour
     {
         LoadValues();
     }
-    public void sliderStart(float value) {
-        _textComp.text = value.ToString("0");
+    public void UpdateSliderText(float value) {
+        _textComp.text = value.ToString();
     }
 
     public void SaveValue() {
