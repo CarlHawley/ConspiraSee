@@ -6,17 +6,17 @@ using UnityEngine;
 [ExecuteAlways]
 public class CanvasElementVisibility : MonoBehaviour
 {
-    private CanvasGroup canvasGroup;
+    private CanvasGroup _canvasGroup;
 
     [SerializeField]
-    private bool visible;
+    private bool _visible;
     public bool Visible
     {
-        get => visible;
+        get => _visible;
         set
         {
-            visible = value;
-            if (visible) ShowElement();
+            _visible = value;
+            if (_visible) ShowElement();
             else HideElement();
         }
     }
@@ -29,17 +29,17 @@ public class CanvasElementVisibility : MonoBehaviour
 
     private void ShowElement()
     {
-        if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 1;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
+        if (!_canvasGroup) _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 1;
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     private void HideElement()
     {
-        if (!canvasGroup) canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0;
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
+        if (!_canvasGroup) _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0;
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
     }
 }

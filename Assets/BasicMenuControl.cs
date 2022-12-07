@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class BasicMenuControl : MonoBehaviour
 {
-    public Slider sliderRed;
-    public Slider sliderGreen;
-    public Slider sliderBlue;
+    public Slider SliderRed;
+    public Slider SliderGreen;
+    public Slider SliderBlue;
 
     // Start is called before the first frame update
     public BasicMenuControl()
     {
-        sliderRed = GetComponent<Slider>();
-        sliderGreen = GetComponent<Slider>();
-        sliderBlue = GetComponent<Slider>();
+        SliderRed = GetComponent<Slider>();
+        SliderGreen = GetComponent<Slider>();
+        SliderBlue = GetComponent<Slider>();
     }
 
 
